@@ -11,7 +11,8 @@ export default class PointsTable extends Component {
     headerTintColor: '#FFF', 
     headerTitleStyle: {
       fontSize: 18,
-      color: '#FFF'
+      color: '#FFF',
+      width: '100%'
     },
     headerStyle:{ 
       backgroundColor:'#47a3e6' 
