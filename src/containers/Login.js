@@ -1,17 +1,45 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, AsyncStorage } from 'react-native';
 import * as simpleAuthProviders from 'react-native-simple-auth';
-import googleSecrets from '../constants/secrets'
+import googleSecrets from '../constants/secrets';
+import { authService } from '../services/ApiServices';
 
 export default class Login extends Component {
     static navigationOptions = {
         header: null
     };
+    componentDidMount = () => {
+       try {
+        AsyncStorage.getItem('@GLStore:userInfo', (error, result) => {
+            const userInfo = JSON.parse(result);
+            this.props.navigation.navigate('Home', { userInfo: userInfo }) 
+        });
+      } catch (error) {
+       console.log(error)
+      }
+    }
     onLogin = (e) => {
         simpleAuthProviders['google'](googleSecrets)
         .then((info) => {
-            console.log(info)
-            this.props.navigation.navigate('Home', { title: `${info.user.given_name} ${info.user.family_name}`, info })
+            loginDetails = {
+                email: info.user.email,
+                first_name: info.user.given_name,
+                social_login_image_path: info.user.picture
+            }
+            authService.login(loginDetails)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log(responseJson)
+                try {
+                    AsyncStorage.setItem('@GLStore:userInfo', JSON.stringify(responseJson));
+                    this.props.navigation.navigate('Home', { title: `${info.user.given_name} ${info.user.family_name}`, info })
+                  } catch (error) {
+                    console.log(error, 'error')
+                  }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
         })
         .catch((error) => {
             console.log(error)
