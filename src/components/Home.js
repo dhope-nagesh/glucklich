@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, Image, StyleSheet, DrawerLayoutAndroid, TouchableOpacity, TouchableHighlight } from 'react-native';
+import {View, Text, Image, StyleSheet, DrawerLayoutAndroid, TouchableOpacity } from 'react-native';
 import ProfileDetails from '../containers/ProfileDetails';
 import PointsTable from '../containers/PointsTable';
 import NewsFeeds from '../containers/NewsFeeds';
@@ -23,20 +23,19 @@ export default class Home extends Component {
      
     render() {
         const navigationView = (
-            <View style={{
-                flex: 1,
-                padding: '10%'
-            }}>
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => this.onPressHandler('Profile')}>
-                    <Image style={{width: 40, height: 40}} source={require('../assets/admin-icon.jpeg')} />
+            <View>
+                <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Profile')}>
+                    <Image style={{width: 30, height: 30}} source={require('../assets/admin-icon.jpeg')} />
                     <Text style={styles.textContainer}>Profile</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => this.onPressHandler('Points')}>
-                    <Image style={{width: 40, height: 40}} source={require('../assets/points-table.png')} />
+                <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey', padding: 0 }} ></View>
+                <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Points')}>
+                    <Image style={{width: 30, height: 30}} source={require('../assets/points-table.png')} />
                     <Text style={styles.textContainer}>Points Table</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => this.onPressHandler('News')}>
-                <Image style={{width: 40, height: 40}} source={require('../assets/news-feed.png')} />
+                <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
+                <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('News')}>
+                <Image style={{width: 30, height: 30}} source={require('../assets/news-feed.png')} />
                     <Text style={styles.textContainer}>News Feeds</Text>
                 </TouchableOpacity>
             </View>
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
     textContainer: {
         fontSize: 18,
         color: '#000',
-        padding: '3%',
-        paddingBottom: '10%'
+        paddingLeft: '12%'
     }
 });
