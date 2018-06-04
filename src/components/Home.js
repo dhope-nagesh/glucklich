@@ -140,7 +140,7 @@ export default class Home extends Component {
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey', padding: 0 }} ></View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Points')}>
                     <Image style={{width: 30, height: 30}} source={require('../assets/points-table.png')} />
-                    <Text style={styles.textContainer}>Points Table</Text>
+                    <Text style={styles.textContainer}>Standings</Text>
                 </TouchableOpacity>
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('QuarterDetails')}>

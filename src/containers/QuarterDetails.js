@@ -25,9 +25,8 @@ export default class QuarterDetails extends Component {
     let quarderDetails = this.props.navigation.state.params.quarderDetails;
     console.log(this.props.navigation.state.params, "quater.")
     const renderTabs = Object.keys(quarderDetails).map((v, index) => {
-      console.log(v, 'quater')
       return (
-        <Tab heading={v} key={index}>
+        <Tab heading={v.toUpperCase()} key={index}>
           <QuaterMembers members={quarderDetails[v]}/>
         </Tab>
       )

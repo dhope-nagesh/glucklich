@@ -21,7 +21,7 @@ export default class QuaterMember extends Component {
 }
 
 const width = Dimensions.get('window').width
-const cardWidth = (width / 2) - 15
+const cardWidth = (width / 2) * 0.60
 
 const styles = StyleSheet.create({
     card: {

@@ -8,7 +8,7 @@ export default class ExampleTwo extends Component {
     super(props);
   }
   static navigationOptions = {
-    title: 'Points Table',
+    title: 'Standings',
     headerTitleStyle: {
       fontSize: 18,
       width: '100%'
@@ -19,51 +19,37 @@ export default class ExampleTwo extends Component {
     const width = Dimensions.get('window').width
     const cardWidth = (width / 2) - 30
     let points = this.props.navigation.state.params.points;
-    const tableTitle = Object.keys(points).map((v) => v.toUpperCase())
-    const tableData = Object.values(points).map((v) => [v.score__sum?v.score__sum:0])
+    const tableData = Object.values(points).map((v) => v.score__sum?v.score__sum:0)
+    const sum = tableData.reduce((a, c) => a + c, 0)
 
+    const renderCircles = Object.keys(points).map((v, index) => {
+      const point = points[v].score__sum?points[v].score__sum:0
+      const quarter = v.toUpperCase()
+      return (
+        <View
+        style={{
+          margin: 10,
+        }}>
+          <ProgressCircle
+          key={index}
+          percent={(point/sum) * 100}
+          radius={cardWidth/2 - 10}
+          borderWidth={10}
+          color="#3399FF"
+          shadowColor="lightgrey"
+          bgColor="#fff">
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={{ fontSize: 40 }}>{quarter}</Text>
+              <Text style={{ fontSize: 40 }}>{point}</Text>
+            {/* {`${quarter}\n${point}`} */}
+            </View>
+        </ProgressCircle>
+        </View>
+      )
+    })
     return (
       <View style={styles.container}>
-      <ProgressCircle
-            percent={30}
-            radius={cardWidth/2}
-            borderWidth={8}
-            color="#3399FF"
-            shadowColor="#999"
-            bgColor="#fff"
-        >
-            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-        </ProgressCircle>
-        <ProgressCircle
-            percent={30}
-            radius={cardWidth/2}
-            borderWidth={8}
-            color="#3399FF"
-            shadowColor="#999"
-            bgColor="#fff"
-        >
-            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-        </ProgressCircle>
-        <ProgressCircle
-            percent={30}
-            radius={cardWidth/2}
-            borderWidth={8}
-            color="#3399FF"
-            shadowColor="#999"
-            bgColor="#fff"
-        >
-            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-        </ProgressCircle>
-        <ProgressCircle
-            percent={30}
-            radius={cardWidth/2}
-            borderWidth={8}
-            color="#3399FF"
-            shadowColor="#999"
-            bgColor="#fff"
-        >
-            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-        </ProgressCircle>
+      {renderCircles}
       </View>
     )
   }
