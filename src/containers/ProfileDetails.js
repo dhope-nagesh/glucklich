@@ -8,30 +8,26 @@ export default class ProfileDetails extends Component {
 
   static navigationOptions = {
     title: 'User Profile',
-    headerTintColor: '#FFF', 
     headerTitleStyle: {
       fontSize: 18,
-      color: '#FFF',
       width: '100%'
-    },
-    headerStyle:{ 
-      backgroundColor:'#47a3e6' 
     }
   };
 
   render(){
     let userData = this.props.navigation.state.params.userData;
-    console.log(userData, "data")
     return(
       <View style={styles.container}>
-        <Image source={{ uri: userData.image_path }} style={{width: 200, height: 200, borderRadius: 100}} />
-        <Text style={styles.textStyle}>{userData.user.first_name}</Text>
-        <Text style={styles.textStyle}>Email: {userData.user.username}</Text>
+        <Image source={{ uri: userData.user.image_path }} style={{width: 200, height: 200, borderRadius: 100}} />
+        <Text style={styles.textStyle}>{userData.user.user.first_name}</Text>
+        <Text style={styles.textStyle}>{userData.quarter.name}</Text>
+        <Text style={styles.textStyle}>Email: {userData.user.user.username}</Text>
       </View>
     );
   }
 
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -43,6 +39,8 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 18,
     fontWeight: '500',
+    textAlign: 'center',
+    width: '100%',
     padding: '3%'
   }
 });

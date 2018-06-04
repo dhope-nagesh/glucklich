@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, Image, StyleSheet } from 'react-native';
+import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import QuaterMembers from '../components/QuaterMembers';
 
 export default class QuarterDetails extends Component {
   constructor(props) {
@@ -8,27 +10,34 @@ export default class QuarterDetails extends Component {
 
   static navigationOptions = {
     title: 'Quarter Details',
-    headerTintColor: '#FFF', 
+    // headerTintColor: '#FFF', 
     headerTitleStyle: {
       fontSize: 18,
-      color: '#FFF',
+      // color: '#FFF',
       width: '100%'
     },
     headerStyle:{ 
-      backgroundColor:'#47a3e6' 
+      // backgroundColor:'#47a3e6' 
     }
   };
 
   render(){
-    let points = this.props.navigation.state.params.points;
-    console.log(points, "points....")
-    return(
-      <View style={styles.container}>
-        <Text style={styles.textStyle}>Q1 : {points.q1.score__sum || 'No points'}</Text>
-        <Text style={styles.textStyle}>Q2 : {points.q2.score__sum || 'No points'}</Text>
-        <Text style={styles.textStyle}>Q3 : {points.q3.score__sum || 'No points'}</Text>
-        <Text style={styles.textStyle}>Q4 : {points.q4.score__sum || 'No points'}</Text>
-      </View>
+    let quarderDetails = this.props.navigation.state.params.quarderDetails;
+    console.log(this.props.navigation.state.params, "quater.")
+    const renderTabs = Object.keys(quarderDetails).map((v, index) => {
+      console.log(v, 'quater')
+      return (
+        <Tab heading={v} key={index}>
+          <QuaterMembers members={quarderDetails[v]}/>
+        </Tab>
+      )
+    })
+    return (
+      <Container>
+        <Tabs>
+          {renderTabs}
+        </Tabs>
+      </Container>
     );
   }
 

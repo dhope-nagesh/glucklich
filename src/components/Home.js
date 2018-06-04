@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { AppService } from '../services/ApiServices';
-import {View, Text, Image, StyleSheet, DrawerLayoutAndroid, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Container, Content } from 'native-base';
+import {View, Text, Image, BackHandler, ToastAndroid, StyleSheet, DrawerLayoutAndroid, TouchableOpacity, AsyncStorage } from 'react-native';
 import ProfileDetails from '../containers/ProfileDetails';
 import PointsTable from '../containers/PointsTable';
-import NewsFeeds from '../containers/NewsFeeds';
+import NewsFeed from '../containers/NewsFeed';
 import Spinner from './Spinner';
+import index from 'react-native-simple-auth';
 
 export default class Home extends Component {
     constructor(props) {
@@ -16,15 +18,37 @@ export default class Home extends Component {
             active: false,
             userDetails: "",
             pointsDetails: "",
-            quarterDetails: "",
-            eventDetails: ""
+            quarterDetails: [],
+            eventDetails: []
         }
     }
     static navigationOptions = ({ navigation }) => ({
-        header: null
+        title: 'Feeds',
+        headerLeft: null,
+        gesturesEnabled: false,
+        headerTitleStyle: {
+            fontSize: 18,
+            width: '100%'
+        }
     });
 
+    handleBackButton() {
+        ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
+        return false;
+    }
+    
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton() {
+        // ToastAndroid.show('Back button is pressed', ToastAndroid.SHORT);
+        return true;
+    }
+
     componentDidMount = () => {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         AppService.getUserProfile(this.state.userInfo.token)
         .then((response) => {
             return response.json()
@@ -96,17 +120,21 @@ export default class Home extends Component {
 
             }
         } else {
-            this.props.navigation.navigate(routeName, {"userData": this.state.userDetails, "points": this.state.pointsDetails, "quarderDetails": this.state.quarterDetails, 
-            "events": this.state.eventDetails});
+            const props = {"userData": this.state.userDetails, "points": this.state.pointsDetails, "quarderDetails": this.state.quarterDetails, 
+            "events": this.state.eventDetails}
+            console.log(routeName, 'The rount')
+            this.props.navigation.navigate(routeName, props);
         }
     }
 
      
     render() {
+        const userDetails = this.state.userDetails
+        const imagePath = userDetails?{ uri: userDetails.user.image_path }: require('../assets/profile-icon.jpg')
         const navigationView = (
             <View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Profile')}>
-                    <Image style={{width: 30, height: 30}} source={require('../assets/admin-icon.jpeg')} />
+                    <Image style={{width: 30, height: 30, borderRadius: 15}} source={imagePath} />
                     <Text style={styles.textContainer}>Profile</Text>
                 </TouchableOpacity>
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey', padding: 0 }} ></View>
@@ -115,9 +143,9 @@ export default class Home extends Component {
                     <Text style={styles.textContainer}>Points Table</Text>
                 </TouchableOpacity>
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
-                <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('News')}>
-                    <Image style={{width: 30, height: 30}} source={require('../assets/news-feed.png')} />
-                    <Text style={styles.textContainer}>News Feeds</Text>
+                <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('QuarterDetails')}>
+                    <Image style={{width: 30, height: 30}} source={require('../assets/quater.png')} />
+                    <Text style={styles.textContainer}>Quaters</Text>
                 </TouchableOpacity>
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Logout')}>
@@ -126,16 +154,20 @@ export default class Home extends Component {
                 </TouchableOpacity>
             </View>
           );
+          const renderFeeds = this.state.eventDetails.map((feed, index) => {
+              console.log(feed, index, 'dfghjk')
+              return <NewsFeed feed={feed} key={index} />
+          })
         const drawer = (
             <DrawerLayoutAndroid
             drawerWidth={300}
             drawerPosition={DrawerLayoutAndroid.positions.Left}
             renderNavigationView={() => navigationView}>
-                <View style={styles.container}>    
-                    {/* <Text> { this.state.userInfo.token } </Text> */}
-                    <Image source={{ uri: this.state.imagePath }} style={{width: 200, height: 200, borderRadius: 100}} />
-                    <Text style={{ fontSize: 20 }}> { this.state.username } </Text>
-                </View>
+                <Container style={styles.container}>
+                <Content>
+                    { renderFeeds }
+                </Content>
+                </Container>
             </DrawerLayoutAndroid>
         )
         return ( 
@@ -147,10 +179,7 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      margin: 20,
+     
     },
     drawerContainer: {
         flex: 1, 

@@ -1,47 +1,117 @@
 import React, { Component } from 'react';
-import {View, Text, Image, StyleSheet } from 'react-native';
+import { StyleSheet, View, Dimensions, Text } from 'react-native';
+import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import ProgressCircle from 'react-native-progress-circle'
 
-export default class PointsTable extends Component {
+export default class ExampleTwo extends Component {
   constructor(props) {
     super(props);
   }
-
   static navigationOptions = {
-    title: 'Points',
-    headerTintColor: '#FFF', 
+    title: 'Points Table',
     headerTitleStyle: {
       fontSize: 18,
-      color: '#FFF',
       width: '100%'
-    },
-    headerStyle:{ 
-      backgroundColor:'#47a3e6' 
     }
   };
-
-  render(){
+ 
+  render() {
+    const width = Dimensions.get('window').width
+    const cardWidth = (width / 2) - 30
     let points = this.props.navigation.state.params.points;
-    console.log(points, "points....")
-    return(
-      <View style={styles.container}>
-        <Text style={styles.textStyle}>Q1 : {points.q1.score__sum || 'No points'}</Text>
-        <Text style={styles.textStyle}>Q2 : {points.q2.score__sum || 'No points'}</Text>
-        <Text style={styles.textStyle}>Q3 : {points.q3.score__sum || 'No points'}</Text>
-        <Text style={styles.textStyle}>Q4 : {points.q4.score__sum || 'No points'}</Text>
-      </View>
-    );
-  }
+    const tableTitle = Object.keys(points).map((v) => v.toUpperCase())
+    const tableData = Object.values(points).map((v) => [v.score__sum?v.score__sum:0])
 
+    return (
+      <View style={styles.container}>
+      <ProgressCircle
+            percent={30}
+            radius={cardWidth/2}
+            borderWidth={8}
+            color="#3399FF"
+            shadowColor="#999"
+            bgColor="#fff"
+        >
+            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+        </ProgressCircle>
+        <ProgressCircle
+            percent={30}
+            radius={cardWidth/2}
+            borderWidth={8}
+            color="#3399FF"
+            shadowColor="#999"
+            bgColor="#fff"
+        >
+            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+        </ProgressCircle>
+        <ProgressCircle
+            percent={30}
+            radius={cardWidth/2}
+            borderWidth={8}
+            color="#3399FF"
+            shadowColor="#999"
+            bgColor="#fff"
+        >
+            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+        </ProgressCircle>
+        <ProgressCircle
+            percent={30}
+            radius={cardWidth/2}
+            borderWidth={8}
+            color="#3399FF"
+            shadowColor="#999"
+            bgColor="#fff"
+        >
+            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
+        </ProgressCircle>
+      </View>
+    )
+  }
 }
+ 
+const width = Dimensions.get('window').width
+const cardWidth = (width / 2) - 30
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    padding: 20,
+  container: { 
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around'
+   },
+  head: {  height: 40,  backgroundColor: '#f1f8ff'  },
+  wrapper: { flexDirection: 'row' },
+  title: { flex: 1, backgroundColor: '#f6f8fa' },
+  row: {  height: 28  },
+  text: { textAlign: 'center' },
+  card: {
+    width: cardWidth,
+    marginTop: 10
   },
-  textStyle: {
-    fontSize: 18,
-    fontWeight: '500'
+  image: {
+    width: cardWidth,
+    height: cardWidth,
+    borderRadius: cardWidth / 2,
+    borderColor: 'blue',
+    borderWidth: 4,
+  },
+  circleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  lower: {
+    height: cardWidth / 2,
+    width: cardWidth - (cardWidth * 0.2),
+    borderTopWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: 'red',
+    textAlign: 'center'
+  },
+  upper: {
+    height: cardWidth / 2,
+    
+  },
+  textContainer: {
+    
   }
 });
