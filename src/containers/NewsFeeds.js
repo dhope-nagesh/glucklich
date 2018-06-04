@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {View, Text, Image, StyleSheet } from 'react-native';
+import {View, Text, Image, StyleSheet, ScrollView  } from 'react-native';
+import Feed from '../components/Feed';
 
 export default class NewsFeeds extends Component {
   constructor(props) {
@@ -11,7 +12,8 @@ export default class NewsFeeds extends Component {
     headerTintColor: '#FFF', 
     headerTitleStyle: {
       fontSize: 18,
-      color: '#FFF'
+      color: '#FFF',
+      width: '100%'
     },
     headerStyle:{ 
       backgroundColor:'#47a3e6' 
@@ -19,10 +21,12 @@ export default class NewsFeeds extends Component {
   };
 
   render(){
+    const feeds = [1, 1, 1, 2, 4, 1, 1, 1, 2, 4, 1, 1, 1, 2, 4].map((i, index) => <Feed key={index} />)
     return(
-      <View style={styles.container}>
-        <Text style={styles.textStyle}>News</Text>
-      </View>
+      <ScrollView  style={styles.container}>
+
+        { feeds }
+      </ScrollView >
     );
   }
 

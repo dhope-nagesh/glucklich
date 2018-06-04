@@ -4,10 +4,11 @@ import Home from './Home';
 import ProfileDetails from '../containers/ProfileDetails';
 import PointsTable from '../containers/PointsTable';
 import NewsFeeds from '../containers/NewsFeeds';
+import QuarterDetails from '../containers/QuarterDetails';
 
 export default RootStack = createStackNavigator({
     Login: {
-      screen: Login,
+      screen: Login
     },
     Home: {
       screen: Home
@@ -20,5 +21,8 @@ export default RootStack = createStackNavigator({
     },
     News: {
       screen: NewsFeeds
+    },
+    QuarterDetails: {
+      screen: QuarterDetails
     }
 });

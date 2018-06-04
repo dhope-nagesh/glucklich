@@ -11,7 +11,8 @@ export default class ProfileDetails extends Component {
     headerTintColor: '#FFF', 
     headerTitleStyle: {
       fontSize: 18,
-      color: '#FFF'
+      color: '#FFF',
+      width: '100%'
     },
     headerStyle:{ 
       backgroundColor:'#47a3e6' 
@@ -19,9 +20,13 @@ export default class ProfileDetails extends Component {
   };
 
   render(){
+    let userData = this.props.navigation.state.params.userData;
+    console.log(userData, "data")
     return(
       <View style={styles.container}>
-        <Text style={styles.textStyle}>Welcome UserX</Text>
+        <Image source={{ uri: userData.image_path }} style={{width: 200, height: 200, borderRadius: 100}} />
+        <Text style={styles.textStyle}>{userData.user.first_name}</Text>
+        <Text style={styles.textStyle}>Email: {userData.user.username}</Text>
       </View>
     );
   }
@@ -32,10 +37,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFF',
+    alignItems: 'center',
     padding: 20
   },
   textStyle: {
     fontSize: 18,
-    fontWeight: '500'
+    fontWeight: '500',
+    padding: '3%'
   }
 });
