@@ -17,10 +17,10 @@ export default class ExampleTwo extends Component {
  
   render() {
     const width = Dimensions.get('window').width
-    const cardWidth = (width / 2) - 30
+    const cardWidth = (width / 2) - 30;
     let points = this.props.navigation.state.params.points;
     const tableTitle = Object.keys(points).map((v) => v.toUpperCase())
-    const tableData = Object.values(points).map((v) => [v.score__sum?v.score__sum:0])
+    const tableData = Object.values(points).map((v) => [v.score__sum ? v.score__sum : 0])
 
     return (
       <View style={styles.container}>
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
   container: { 
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    padding: 10
    },
   head: {  height: 40,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },

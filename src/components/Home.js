@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppService } from '../services/ApiServices';
-import { Container, Content } from 'native-base';
+import { Container, Content, Icon } from 'native-base';
 import {View, Text, Image, BackHandler, ToastAndroid, StyleSheet, DrawerLayoutAndroid, TouchableOpacity, AsyncStorage } from 'react-native';
 import ProfileDetails from '../containers/ProfileDetails';
 import PointsTable from '../containers/PointsTable';
@@ -24,12 +24,12 @@ export default class Home extends Component {
     }
     static navigationOptions = ({ navigation }) => ({
         title: 'Feeds',
-        headerLeft: null,
         gesturesEnabled: false,
         headerTitleStyle: {
             fontSize: 18,
             width: '100%'
-        }
+        },
+        headerLeft: <Icon name="menu" size={35} onPress={navigation.navigate('DrawerOpen')} />
     });
 
     handleBackButton() {
@@ -62,7 +62,7 @@ export default class Home extends Component {
             })
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         })
 
         // getPointsDetails
@@ -74,7 +74,6 @@ export default class Home extends Component {
             this.setState({
                 pointsDetails: responseJson
             })
-            console.log(responseJson, "test points")
         })
         .catch((error) => {
             console.log(error)
@@ -86,10 +85,10 @@ export default class Home extends Component {
             return response.json()
         })
         .then((responseJson) => {
+            console.log("here")
             this.setState({
                 quarterDetails: responseJson
             })
-            console.log(responseJson, "quarter points")
         })
         .catch((error) => {
             console.log(error)
@@ -98,31 +97,29 @@ export default class Home extends Component {
         // getEventDetails
         AppService.getEventDetails()
         .then((response) => {
+            console.log(response, "respone")
             return response.json()
         })
         .then((responseJson) => {
             this.setState({
                 eventDetails: responseJson
             })
-            console.log(responseJson, "events")
         })
         .catch((error) => {
-            console.log(error)
+            console.log(error);
         })
     }
     onPressHandler = (routeName) => {
-        if(routeName === 'Logout') {
+        if (routeName === 'Logout') {
             try {
                 AsyncStorage.clear();
-                // this.props.navigation.state.params.onNavigateBack();
-                this.props.navigation.goBack();
+                this.props.navigation.navigate('Login');
             } catch (error) {
-
+                console.log(error);
             }
         } else {
             const props = {"userData": this.state.userDetails, "points": this.state.pointsDetails, "quarderDetails": this.state.quarterDetails, 
             "events": this.state.eventDetails}
-            console.log(routeName, 'The rount')
             this.props.navigation.navigate(routeName, props);
         }
     }
@@ -137,7 +134,7 @@ export default class Home extends Component {
                     <Image style={{width: 30, height: 30, borderRadius: 15}} source={imagePath} />
                     <Text style={styles.textContainer}>Profile</Text>
                 </TouchableOpacity>
-                <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey', padding: 0 }} ></View>
+                <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Points')}>
                     <Image style={{width: 30, height: 30}} source={require('../assets/points-table.png')} />
                     <Text style={styles.textContainer}>Points Table</Text>
@@ -145,7 +142,7 @@ export default class Home extends Component {
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('QuarterDetails')}>
                     <Image style={{width: 30, height: 30}} source={require('../assets/quater.png')} />
-                    <Text style={styles.textContainer}>Quaters</Text>
+                    <Text style={styles.textContainer}>Quarters</Text>
                 </TouchableOpacity>
                 <View style={{ borderWidth: 0.3, borderBottomColor: 'lightgrey' }} ></View>
                 <TouchableOpacity style={{flexDirection: 'row', padding: '7%'}} onPress={() => this.onPressHandler('Logout')}>
@@ -155,7 +152,6 @@ export default class Home extends Component {
             </View>
           );
           const renderFeeds = this.state.eventDetails.map((feed, index) => {
-              console.log(feed, index, 'dfghjk')
               return <NewsFeed feed={feed} key={index} />
           })
         const drawer = (
@@ -164,14 +160,14 @@ export default class Home extends Component {
             drawerPosition={DrawerLayoutAndroid.positions.Left}
             renderNavigationView={() => navigationView}>
                 <Container style={styles.container}>
-                <Content>
+                <Content style={styles.content}>
                     { renderFeeds }
                 </Content>
                 </Container>
             </DrawerLayoutAndroid>
         )
         return ( 
-            this.state.active? drawer: (<Spinner />)
+            drawer
         )
     }
 }
@@ -179,7 +175,7 @@ export default class Home extends Component {
 
 const styles = StyleSheet.create({
     container: {
-     
+        padding: 10
     },
     drawerContainer: {
         flex: 1, 
@@ -193,5 +189,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#000',
         paddingLeft: '12%'
+    },
+    content: {
+        padding: 10
     }
 });
